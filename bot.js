@@ -32,12 +32,12 @@ const texts = [
   'Tak počkať. Čo je v tých bedýnkach? vov klasik! už o # dní!',
   'Ahoj chlapci. hádajte čo! vov klasik tu bude už o # dní!',
   'Hej vy kuks, get redy, o # dní tu je klasik!',
-  'jou jou jou, jaké ste levely? to je jedno lebo už o # dní budete levelovať na klasiku!',
-  'No čo? Čo hráte? íív onlajn? ded baj dejlajt? čo by ste povedali na klasik? už o # dní!',
-  'Čautee. Viete čo je lepšie než cibuľa? 2 cibule? to nie, vov klasik! už o # dní!',
+  'jov jov jov, jaké ste levely? to je jedno lebo už o # dní budete levelovať na klasiku!',
+  'No čo? Čo hráte? íív onlajn? alebo dead baj daylight? čo by ste povedali na klasik? už o # dní!',
+  'Čaute. Viete čo je lepšie než cibuľa? 2 cibule? to nie, vov klasik! už o # dní!',
   'es es top a zrazu pudž sa tu zjavil. ale nie z hora ale z dola! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
   'počúvaj. ty. tebe sa ten diel páčil? tak to počkaj až si zahraš vov klasik. už o # dní!',
-  'halo? . . . . . . . . . halo? . . . . . # dní! . . . opakujem. # dní do klasiku!',
+  'haló? . . . . . - -       .   .,.,,..!!,.., . . . . haló? . . . . . # dní! . . . opakujem. # dní do klasiku!',
   'dobrý deň. chcete čakať do levelu 40 aby ste si mohli kúpiť epik maunta? a aj tak nemôcť pretože nemáte 1000 goldov? vov klasik už o # dní!',
   'zomreli ste na hardkor? mam pre vás hru kde sa vám to nestane! vov klasik už o # dní!'
 ]
@@ -68,9 +68,9 @@ client.on('ready', async () => {
 
 
 const hypeUpVoiceChannel = async (voiceChannel) => {
-
+  const text = texts[Math.floor(texts.length*Math.random())].replace(/#/g, daysLeft)+'  hajp hajp hajp jeeah';
   const request = {
-    input: { text: texts[Math.floor(texts.length*Math.random())].replace(/#/g, daysLeft)+'  hajp hajp hajp jeeah' },
+    input: { text },
     // Select the language and SSML Voice Gender (optional)
     voice: { languageCode: 'sk-SK', name: 'sk-SK-Wavenet-A' },
     // Select the type of audio encoding
@@ -90,7 +90,7 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
         console.error('ERROR:', err);
         return;
       }
-      console.log('Audio content written to file: output.mp3');
+      console.log('Audio content written to file output.mp3: ' + text);
       voiceConnection = await voiceChannel.join();
       const dispatcher = voiceConnection.playFile('output.mp3');
       dispatcher.on('end', async () => {

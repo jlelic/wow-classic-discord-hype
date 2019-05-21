@@ -28,6 +28,11 @@ const config = {
 let textChannel;
 let voiceConnection;
 
+const texts = [
+  'Tak počkať. Čo je v tých bedýnkach? vov klasik! už o # dní!',
+  'Ahoj chlapci, klasik tu bude už o # dní!'
+]
+
 client.on('ready', async () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
 
@@ -56,7 +61,7 @@ client.on('ready', async () => {
 const hypeUpVoiceChannel = async (voiceChannel) => {
 
   const request = {
-    input: { text: `Ahoj chlapci, klasik tu bude už o ${daysLeft} dní!. hajp hajp hajp jeeah` },
+    input: { text: texts[Math.floor(texts.length*Math.random())].replace(/#/, daysLeft)+'  hajp hajp hajp jeeah' },
     // Select the language and SSML Voice Gender (optional)
     voice: { languageCode: 'sk-SK', name: 'sk-SK-Wavenet-A' },
     // Select the type of audio encoding

@@ -51,7 +51,7 @@ client.on('ready', async () => {
     if (channel.name == TEXT_CHANNEL_NAME) {
       textChannel = channel;
     }
-    if (channel.type === 'voice') {
+    if (channel.type === 'voice' && !channel.name.toLocaleLowerCase().includes('afk')) {
       const guests = channel.members.size;
       if(guests > maxVoiceGuestsCount) {
         maxVoiceGuestsCount = guests;

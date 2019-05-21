@@ -84,10 +84,12 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
       console.log('Audio content written to file: output.mp3');
       voiceConnection = await voiceChannel.join();
       const dispatcher = voiceConnection.playFile('output.mp3');
-      dispatcher.on('end', () => {
-        setTimeout(() => {
+      dispatcher.on('end', async () => {
+        setTimeout(async () => {
           dispatcher.end();
           voiceChannel.leave();
+          await client.destroy();
+          process.exit(0);
         }, 1000)
       });
     });

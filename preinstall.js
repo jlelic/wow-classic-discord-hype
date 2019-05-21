@@ -1,1 +1,1 @@
-require('fs').writeFile('./google-credentials-heroku.json', process.env.GOOGLE_CONFIG, (err) => {});
+require('fs').writeFile(process.env.GOOGLE_APPLICATION_CREDENTIALS, process.env.GOOGLE_CONFIG, (err) => {});

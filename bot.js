@@ -60,7 +60,7 @@ client.on('ready', async () => {
     }
   });
 
-  client.user.setActivity(`TOP SECRET`);
+  client.user.setActivity(`WoW Classic in ${daysLeft} days`);
   await hypeUpVoiceChannel(mostActiveVoiceChannel);
   const icon = await createIcon();
   setIcon(icon);

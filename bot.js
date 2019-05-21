@@ -30,7 +30,11 @@ let voiceConnection;
 
 const texts = [
   'Tak počkať. Čo je v tých bedýnkach? vov klasik! už o # dní!',
-  'Ahoj chlapci, klasik tu bude už o # dní!'
+  'Ahoj chlapci, klasik tu bude už o # dní!',
+  'Hej vy kuks, get redy, o # dní tu je klasik!',
+  'jou jou jou, jaké ste levely? to je jedno lebo už o # dní budete levelovať na klasiku!',
+  'No čo? Čo hráte? íív onlajn? ded baj dejlajt? čo by ste povedali na klasik? už o # dní!',
+  'Čautee. Viete čo je lepšie než cibuľa? 2 cibule? to nie, vov klasik! už o # dní!',
 ]
 
 client.on('ready', async () => {
@@ -61,7 +65,7 @@ client.on('ready', async () => {
 const hypeUpVoiceChannel = async (voiceChannel) => {
 
   const request = {
-    input: { text: texts[Math.floor(texts.length*Math.random())].replace(/#/, daysLeft)+'  hajp hajp hajp jeeah' },
+    input: { text: texts[Math.floor(texts.length*Math.random())].replace(/#/g, daysLeft)+'  hajp hajp hajp jeeah' },
     // Select the language and SSML Voice Gender (optional)
     voice: { languageCode: 'sk-SK', name: 'sk-SK-Wavenet-A' },
     // Select the type of audio encoding

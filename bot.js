@@ -61,9 +61,11 @@ client.on('ready', async () => {
   });
 
   client.user.setActivity(`WoW Classic in ${daysLeft} days`);
+  const icon = await createIcon(daysLeft);
+  console.log('Icon created')
+  await setIcon(icon);
+  console.log('Icon updated')
   mostActiveVoiceChannel && await hypeUpVoiceChannel(mostActiveVoiceChannel);
-  const icon = await createIcon();
-  setIcon(icon);
 });
 
 
@@ -105,7 +107,8 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
   });
 }
 
-const createIcon = async () => {
+const createIcon = async (daysLeft) => {
+  console.log(`Creating icon for ${daysLeft} days left`)
   const canvas = createCanvas(260, 275)
   const ctx = canvas.getContext('2d')
   const textX = 6;
@@ -132,6 +135,6 @@ const createIcon = async () => {
   return canvas.toBuffer('image/png');
 }
 
-const setIcon = (data) => client.guilds.first().setIcon(new Buffer(data, 'icon.png'), "WoW classic countdown update");
+const setIcon = async (data) => await client.guilds.first().setIcon(new Buffer(data, 'icon.png'), "WoW classic countdown update");
 
 client.login(config.token);

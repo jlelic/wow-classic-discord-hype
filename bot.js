@@ -37,9 +37,9 @@ const texts = [
   'Čaute. Viete čo je lepšie než cibuľa? 2 cibule? to nie, vov klasik! už o # dní!',
   'es es top a zrazu pudž sa tu zjavil. ale nie z hora ale z dola! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
   'počúvaj. ty. tebe sa ten diel páčil? tak to počkaj až si zahraš vov klasik. už o # dní!',
-  'haló? . . . . . - -       .   .,.,,..!!,.., . . . . haló? . . . . . # dní! . . . opakujem. # dní do klasiku!',
   'dobrý deň. chcete čakať do levelu 40 aby ste si mohli kúpiť epik maunta? a aj tak nemôcť pretože nemáte 1000 goldov? vov klasik už o # dní!',
-  'zomreli ste na hardkor? mam pre vás hru kde sa vám to nestane! vov klasik už o # dní!'
+  'zomreli ste na hardkor? mam pre vás hru kde sa vám to nestane! vov klasik už o # dní!',
+  'niekto známy raz povedal. citujem. ja už nehrám hry. koniec citácie. uvidíme či nebude hrať ani vov klasik. už o # dní!'
 ]
 
 client.on('ready', async () => {

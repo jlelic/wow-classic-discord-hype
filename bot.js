@@ -12,7 +12,7 @@ client.on('error', (err) => {
   console.error(err);
 });
 
-const daysLeft = Math.round((new Date('2019-08-27') - new Date()) / (1000 * 60 * 60 * 24));
+const daysLeft = Math.floor((new Date('2019-08-27') - new Date()) / (1000 * 60 * 60 * 24));
 
 const ttsClient = new textToSpeech.TextToSpeechClient();
 

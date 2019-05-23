@@ -65,7 +65,7 @@ client.on('ready', async () => {
   console.log('Icon created')
   await setIcon(icon);
   console.log('Icon updated')
-  mostActiveVoiceChannel && await hypeUpVoiceChannel(mostActiveVoiceChannel);
+  mostActiveVoiceChannel ? await hypeUpVoiceChannel(mostActiveVoiceChannel) : await exit();
 });
 
 
@@ -99,8 +99,7 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
         setTimeout(async () => {
           dispatcher.end();
           voiceChannel.leave();
-          await client.destroy();
-          process.exit(0);
+          exit();
         }, 1000)
       });
     });
@@ -136,5 +135,10 @@ const createIcon = async (daysLeft) => {
 }
 
 const setIcon = async (data) => await client.guilds.first().setIcon(new Buffer(data, 'icon.png'), "WoW classic countdown update");
+
+const exit = async () => {
+  await client.destroy();
+  process.exit(0);
+}
 
 client.login(config.token);

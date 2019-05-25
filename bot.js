@@ -42,6 +42,14 @@ const texts = [
   'niekto známy raz povedal. citujem. ja už nehrám hry. koniec citácie. uvidíme či nebude hrať ani vov klasik. už o # dní!'
 ]
 
+const norwegianTexts = [
+  'Hei vår norske gjest. Stopp å drepe rotter og begynn å spille wow classic. på bare # dager'
+]
+
+const japaneseTexts = [
+  'はじめまして。 私はあなたがゲーマーではないことを知っていますが、あなたはわずか#日で ワオ クラシク を試すべきです。'
+]
+
 client.on('ready', async () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
 
@@ -53,7 +61,7 @@ client.on('ready', async () => {
     }
     if (channel.type === 'voice' && !channel.name.toLocaleLowerCase().includes('afk')) {
       const guests = channel.members.size;
-      if(guests > maxVoiceGuestsCount) {
+      if (guests > maxVoiceGuestsCount) {
         maxVoiceGuestsCount = guests;
         mostActiveVoiceChannel = channel;
       }
@@ -70,11 +78,11 @@ client.on('ready', async () => {
 
 
 const hypeUpVoiceChannel = async (voiceChannel) => {
-  const text = texts[Math.floor(texts.length*Math.random())].replace(/#/g, daysLeft)+'  hajp hajp hajp jeeah';
+  const { languageCode, text, name } = selectVoiceLine(voiceChannel);
   const request = {
     input: { text },
     // Select the language and SSML Voice Gender (optional)
-    voice: { languageCode: 'sk-SK', name: 'sk-SK-Wavenet-A' },
+    voice: { languageCode, name },
     // Select the type of audio encoding
     audioConfig: { audioEncoding: 'MP3' }
   };
@@ -106,6 +114,31 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
   });
 }
 
+const selectVoiceLine = (voiceChannel) => {
+  let text = texts[Math.floor(texts.length * Math.random())].replace(/#/g, daysLeft) + '  hajp hajp hajp jeeah';
+  let languageCode = 'sk-SK';
+  let name = 'sk-SK-Wavenet-A';
+  if (Math.random() > 0.5) {
+    if (norwegianPresent(voiceChannel)) {
+      text = norwegianTexts[Math.floor(norwegianTexts.length * Math.random())].replace(/#/g, daysLeft) + '  hajp hajp hajp yeah';
+      languageCode = 'nb-NO';
+      name = 'nb-no-Wavenet-E';
+    }
+    if (weabooPresent(voiceChannel)) {
+      text = japaneseTexts[Math.floor(japaneseTexts.length * Math.random())].replace(/#/g, daysLeft) + '  hype hype hype yeah';
+      languageCode = 'ja-JP';
+      name = 'ja-JP-Wavenet-A';
+    }
+  }
+  return { text, languageCode, name };
+}
+
+const userPresent = (voiceChannel, name) => [...voiceChannel.members].some(([_, { user: { username } }]) => username === name)
+
+const norwegianPresent = (voiceChannel) => userPresent(voiceChannel, 'Aregahz')
+
+const weabooPresent = (voiceChannel) => userPresent(voiceChannel, 'adori')
+
 const createIcon = async (daysLeft) => {
   console.log(`Creating icon for ${daysLeft} days left`)
   const canvas = createCanvas(260, 275)
@@ -123,7 +156,7 @@ const createIcon = async (daysLeft) => {
 
   // Draw cat with lime helmet
   const image = await loadImage('kai-wow.png')
-  ctx.drawImage(image,0,0)
+  ctx.drawImage(image, 0, 0)
   ctx.font = "110px Arial"
   ctx.lineWidth = 10;
   ctx.strokeStyle = 'rgb(41, 61, 99)'

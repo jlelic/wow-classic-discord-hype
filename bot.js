@@ -12,7 +12,11 @@ client.on('error', (err) => {
   console.error(err);
 });
 
-const daysLeft = Math.floor((new Date('2019-08-27T12:00:00') - new Date()) / (1000 * 60 * 60 * 24));
+let daysLeft;
+const recalculateDaysLeft = () => {
+  daysLeft = Math.floor((new Date('2019-08-27T12:00:00') - new Date()) / (1000 * 60 * 60 * 24));
+}
+recalculateDaysLeft();
 
 const ttsClient = new textToSpeech.TextToSpeechClient();
 
@@ -35,11 +39,19 @@ const texts = [
   'jov jov jov, jaké ste levely? to je jedno lebo už o # dní budete levelovať na klasiku!',
   'No čo? Čo hráte? íív onlajn? alebo dead baj daylight? čo by ste povedali na klasik? už o # dní!',
   'Čaute. Viete čo je lepšie než cibuľa? 2 cibule? to nie, vov klasik! už o # dní!',
-  'es es top a zrazu pudž sa tu zjavil. ale nie z hora ale z dola! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
+  'es es top a zrazu pudž sa tu zjavil. na druhej strane na ľavo a nie na pravo! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
   'počúvaj. ty. tebe sa ten diel páčil? tak to počkaj až si zahraš vov klasik. už o # dní!',
   'dobrý deň. chcete čakať do levelu 40 aby ste si mohli kúpiť epik maunta? a aj tak nemôcť pretože nemáte 1000 goldov? vov klasik už o # dní!',
   'zomreli ste na hardkor? mam pre vás hru kde sa vám to nestane! vov klasik už o # dní!',
-  'niekto známy raz povedal. citujem. ja už nehrám hry. koniec citácie. uvidíme či nebude hrať ani vov klasik. už o # dní!'
+  'niekto známy raz povedal. citujem. ja už nehrám hry. koniec citácie. uvidíme či nebude hrať ani vov klasik. už o # dní!',
+  'ta seansa to je rakovina. ja nenavidim seanza. ale jednu vec mám rada. vov klasik. a zahram si ho už o # dní!',
+  {
+    ssml: `<speak>
+      Haló?<break time="5s"/>Haló?<break time="2s"/>
+      Je ma počuť? Alebo ma len zas mišo ignoruje? <break time="1s"/>
+      Tak to dúfam, že o # dní neodignoruje vov klasik! hajp hajp hajp jeaah
+    </speak>`
+  },
 ]
 
 const norwegianTexts = [
@@ -48,6 +60,19 @@ const norwegianTexts = [
 
 const japaneseTexts = [
   'はじめまして。 私はあなたがゲーマーではないことを知っていますが、あなたはわずか#日で ワオ クラシク を試すべきです。'
+]
+
+const nelfDismiss = [
+  'Elune be with you.',
+  'Elune-Adore.',
+  'Elune light your path.',
+  'Goddess watch over you.',
+  'Ashna-felna.',
+  'Delk-nadres.',
+  'Go in peace.',
+  'Good luck friend.',
+  'Peace be with you.',
+  'Till next we meet.',
 ]
 
 client.on('ready', async () => {
@@ -69,7 +94,7 @@ client.on('ready', async () => {
   });
 
   client.user.setActivity(`WoW Classic in ${daysLeft} days`);
-  if(daysLeft <= 30){
+  if (daysLeft <= 30) {
     const icon = await createIcon(daysLeft);
     console.log('Icon created')
     await setIcon(icon);
@@ -78,11 +103,29 @@ client.on('ready', async () => {
   mostActiveVoiceChannel ? await hypeUpVoiceChannel(mostActiveVoiceChannel) : await exit();
 });
 
+client.on('message', async (message) => {
+  if (!message.content.startsWith('!classic')) {
+    return;
+  }
+  await sleep(500);
+  const [[_, recentMessage], ...__] = await message.channel.fetchMessages({ limit: 1 });
+  if (recentMessage.author.username === 'Classic hype') {
+    recentMessage.delete();
+    console.log("Deleting competition's message  >:)")
+  }
+  recalculateDaysLeft();
+  const response = `Ishnu-alah <@${message.author.id}>. WoW Classic will be released in ${daysLeft} days. ${sample(nelfDismiss)}`;
+  message.channel.send(response);
+})
+
+const sample = array => array[Math.floor(array.length * Math.random())];
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const hypeUpVoiceChannel = async (voiceChannel) => {
-  const { languageCode, text, name } = selectVoiceLine(voiceChannel);
+  const { languageCode, input, name } = selectVoiceLine(voiceChannel);
   const request = {
-    input: { text },
+    input,
     // Select the language and SSML Voice Gender (optional)
     voice: { languageCode, name },
     // Select the type of audio encoding
@@ -102,7 +145,7 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
         console.error('ERROR:', err);
         return;
       }
-      console.log('Audio content written to file output.mp3: ' + text);
+      console.log('Audio content written to file output.mp3');
       voiceConnection = await voiceChannel.join();
       const dispatcher = voiceConnection.playFile('output.mp3');
       dispatcher.on('end', async () => {
@@ -117,22 +160,28 @@ const hypeUpVoiceChannel = async (voiceChannel) => {
 }
 
 const selectVoiceLine = (voiceChannel) => {
-  let text = texts[Math.floor(texts.length * Math.random())].replace(/#/g, daysLeft) + '  hajp hajp hajp jeeah';
+  let voiceLine = sample(texts);
   let languageCode = 'sk-SK';
   let name = 'sk-SK-Wavenet-A';
   if (Math.random() > 0.5) {
     if (norwegianPresent(voiceChannel)) {
-      text = norwegianTexts[Math.floor(norwegianTexts.length * Math.random())].replace(/#/g, daysLeft) + '  hajp hajp hajp yeah';
+      voiceLine = sample(norwegianTexts);
       languageCode = 'nb-NO';
       name = 'nb-no-Wavenet-E';
     }
     if (weabooPresent(voiceChannel)) {
-      text = japaneseTexts[Math.floor(japaneseTexts.length * Math.random())].replace(/#/g, daysLeft) + '  hype hype hype yeah';
+      voiceLine = sample(japaneseTexts);
       languageCode = 'ja-JP';
       name = 'ja-JP-Wavenet-A';
     }
   }
-  return { text, languageCode, name };
+  let input = {};
+  if (typeof voiceLine === 'string') {
+    input.text = voiceLine.replace(/#/g, daysLeft) + ' hajp hajp hajp yeah';
+  } else if(voiceLine.ssml) {
+    input.ssml = voiceLine.ssml.replace(/#/g, daysLeft);
+  }
+  return { input, languageCode, name };
 }
 
 const userPresent = (voiceChannel, name) => [...voiceChannel.members].some(([_, { user: { username } }]) => username === name)

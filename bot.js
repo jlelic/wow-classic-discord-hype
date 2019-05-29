@@ -12,7 +12,7 @@ client.on('error', (err) => {
   console.error(err);
 });
 
-const daysLeft = Math.floor((new Date('2019-08-27') - new Date()) / (1000 * 60 * 60 * 24));
+const daysLeft = Math.floor((new Date('2019-08-27T12:00:00') - new Date()) / (1000 * 60 * 60 * 24));
 
 const ttsClient = new textToSpeech.TextToSpeechClient();
 
@@ -69,10 +69,12 @@ client.on('ready', async () => {
   });
 
   client.user.setActivity(`WoW Classic in ${daysLeft} days`);
-  const icon = await createIcon(daysLeft);
-  console.log('Icon created')
-  await setIcon(icon);
-  console.log('Icon updated')
+  if(daysLeft <= 30){
+    const icon = await createIcon(daysLeft);
+    console.log('Icon created')
+    await setIcon(icon);
+    console.log('Icon updated')
+  }
   mostActiveVoiceChannel ? await hypeUpVoiceChannel(mostActiveVoiceChannel) : await exit();
 });
 
@@ -145,17 +147,8 @@ const createIcon = async (daysLeft) => {
   const ctx = canvas.getContext('2d')
   const textX = 6;
   const textY = 180;
-
-// Draw line under text
-  var text = ctx.measureText('Awesome!')
-  ctx.strokeStyle = 'rgba(0,0,0,0.5)'
-  ctx.beginPath()
-  ctx.lineTo(50, 102)
-  ctx.lineTo(50 + text.width, 102)
-  ctx.stroke()
-
-  // Draw cat with lime helmet
   const image = await loadImage('kai-wow.png')
+
   ctx.drawImage(image, 0, 0)
   ctx.font = "110px Arial"
   ctx.lineWidth = 10;

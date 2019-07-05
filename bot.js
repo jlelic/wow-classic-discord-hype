@@ -34,22 +34,29 @@ let voiceConnection;
 
 const texts = [
   'Tak počkať. Čo je v tých bedýnkach? vov klasik! už o # dní!',
-  'Ahoj chlapci. hádajte čo! vov klasik tu bude už o # dní!',
   'Hej vy kuks, get redy, o # dní tu je klasik!',
   'jov jov jov, jaké ste levely? to je jedno lebo už o # dní budete levelovať na klasiku!',
-  'No čo? Čo hráte? íív onlajn? alebo dead baj daylight? čo by ste povedali na klasik? už o # dní!',
-  'Čaute. Viete čo je lepšie než cibuľa? 2 cibule? to nie, vov klasik! už o # dní!',
   'es es top a zrazu pudž sa tu zjavil. na druhej strane na ľavo a nie na pravo! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
-  'počúvaj. ty. tebe sa ten diel páčil? tak to počkaj až si zahraš vov klasik. už o # dní!',
-  'dobrý deň. chcete čakať do levelu 40 aby ste si mohli kúpiť epik maunta? a aj tak nemôcť pretože nemáte 1000 goldov? vov klasik už o # dní!',
-  'zomreli ste na hardkor? mam pre vás hru kde sa vám to nestane! vov klasik už o # dní!',
   'niekto známy raz povedal. citujem. ja už nehrám hry. koniec citácie. uvidíme či nebude hrať ani vov klasik. už o # dní!',
   'ta seansa to je rakovina. ja nenavidim seanza. ale jednu vec mám rada. vov klasik. a zahram si ho už o # dní!',
   {
     ssml: `<speak>
       Haló?<break time="5s"/>Haló?<break time="2s"/>
       Je ma počuť? Alebo ma len zas mišo ignoruje? <break time="1s"/>
-      Tak to dúfam, že o # dní neodignoruje vov klasik! hajp hajp hajp jeaah
+      Tak to dúfam, že o # dní neodignoruje vov klasik! hajp hajp hajp yeaah
+    </speak>`
+  },
+  {
+    ssml: `<speak>
+      <break time="4s"/>
+      <audio
+      src="https://www.redringtones.com/wp-content/uploads/2016/09/halloween-theme-song.mp3"
+      clipEnd="4s"
+      soundLevel="40"
+      >
+        Bu bu bu <break time="2s"/>
+      </audio>
+      Zľakli ste sa, čo? Nič sa nebojte, klasik už o # dní! hajp hajp hajp yeaah
     </speak>`
   },
 ]
@@ -178,7 +185,7 @@ const selectVoiceLine = (voiceChannel) => {
   let input = {};
   if (typeof voiceLine === 'string') {
     input.text = voiceLine.replace(/#/g, daysLeft) + ' hajp hajp hajp yeah';
-  } else if(voiceLine.ssml) {
+  } else if (voiceLine.ssml) {
     input.ssml = voiceLine.ssml.replace(/#/g, daysLeft);
   }
   return { input, languageCode, name };

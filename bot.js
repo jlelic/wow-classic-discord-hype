@@ -48,6 +48,12 @@ const texts = [
   },
   {
     ssml: `<speak>
+      Viete z akého slova je slovo myšlienka? <break time="1s"/> No predsa Mišo! <break time="0.5s"/> Vy ale rozmýšľať o hre nemusíte, klasik o # dni!
+      hajp hajp hajp yeaah
+    </speak>`
+  },
+  {
+    ssml: `<speak>
       <break time="4s"/>
       <audio
       src="https://www.redringtones.com/wp-content/uploads/2016/09/halloween-theme-song.mp3"

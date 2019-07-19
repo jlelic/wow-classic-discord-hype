@@ -68,7 +68,7 @@ const texts = [
 ]
 
 const norwegianTexts = [
-  'Hei vår norske gjest. Stopp å drepe rotter og begynn å spille wow classic. på bare # dager'
+  'hei vår norske gjest! er du klar for purge? Nei? det spiller ingen rolle. Det som betyr noe er at du er klar for wow-klassikeren. på bare # dager'
 ]
 
 const japaneseTexts = [
@@ -176,7 +176,7 @@ const selectVoiceLine = (voiceChannel) => {
   let voiceLine = sample(texts);
   let languageCode = 'sk-SK';
   let name = 'sk-SK-Wavenet-A';
-  if (Math.random() > 0.5) {
+  if (Math.random() > 0.2) {
     if (norwegianPresent(voiceChannel)) {
       voiceLine = sample(norwegianTexts);
       languageCode = 'nb-NO';

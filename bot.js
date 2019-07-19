@@ -36,7 +36,7 @@ const texts = [
   'Tak počkať. Čo je v tých bedýnkach? vov klasik! už o # dní!',
   'Hej vy kuks, get redy, o # dní tu je klasik!',
   'jov jov jov, jaké ste levely? to je jedno lebo už o # dní budete levelovať na klasiku!',
-  'es es top a zrazu pudž sa tu zjavil. na druhej strane na ľavo a nie na pravo! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
+  'lol počúvaj. es es top a zrazu pudž sa tu zjavil. na druhej strane na ľavo a nie na pravo! ja to livnem a pôjdem hrať vov klasik. už o # dní!',
   'niekto známy raz povedal. citujem. ja už nehrám hry. koniec citácie. uvidíme či nebude hrať ani vov klasik. už o # dní!',
   'ta seansa to je rakovina. ja nenavidim seanza. ale jednu vec mám rada. vov klasik. a zahram si ho už o # dní!',
   {

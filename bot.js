@@ -14,7 +14,7 @@ client.on('error', (err) => {
 
 let daysLeft;
 const recalculateDaysLeft = () => {
-  daysLeft = Math.floor((new Date('2019-08-27T12:00:00') - new Date()) / (1000 * 60 * 60 * 24));
+  daysLeft = Math.floor((new Date('2019-08-27T00:00:00') - new Date()) / (1000 * 60 * 60 * 24));
 }
 recalculateDaysLeft();
 

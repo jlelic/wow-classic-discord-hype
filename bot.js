@@ -14,7 +14,7 @@ client.on('error', (err) => {
 
 let daysLeft;
 const recalculateDaysLeft = () => {
-  daysLeft = Math.floor((new Date('2019-08-27T00:00:00') - new Date()) / (1000 * 60 * 60 * 24));
+  daysLeft = Math.floor((new Date('August 27, 2019 00:00:00 UTC+2') - new Date()) / (1000 * 60 * 60 * 24));
 }
 recalculateDaysLeft();
 
@@ -63,6 +63,13 @@ const texts = [
         Bu bu bu <break time="2s"/>
       </audio>
       Zľakli ste sa, čo? Nič sa nebojte, klasik už o # dní! hajp hajp hajp yeaah
+    </speak>`
+  },
+  {
+    ssml: `<speak>
+      <break time="5s"/>heeej boys<break time="2s"/>
+      ste pripravený expiť za alianciu na pe ve pe serveri? <break time="1s"/>
+      Tak to je najs pretože vov klasik tu je už o # dní! hajp hajp hajp yeaah
     </speak>`
   },
 ]
@@ -176,7 +183,7 @@ const selectVoiceLine = (voiceChannel) => {
   let voiceLine = sample(texts);
   let languageCode = 'sk-SK';
   let name = 'sk-SK-Wavenet-A';
-  if (Math.random() > 0.2) {
+  if (Math.random() > 0.7) {
     if (norwegianPresent(voiceChannel)) {
       voiceLine = sample(norwegianTexts);
       languageCode = 'nb-NO';

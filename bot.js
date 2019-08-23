@@ -196,10 +196,11 @@ const selectVoiceLine = (voiceChannel) => {
     voiceLine = lastHoursText;
   }
   let input = {};
+  const timeLeft = hoursLeft < 100 ? hoursLeft : daysLeft
   if (typeof voiceLine === 'string') {
-    input.text = voiceLine.replace(/#/g, daysLeft) + ' hajp hajp hajp yeah';
+    input.text = voiceLine.replace(/#/g, timeLeft) + ' hajp hajp hajp yeah';
   } else if (voiceLine.ssml) {
-    input.ssml = voiceLine.ssml.replace(/#/g, daysLeft);
+    input.ssml = voiceLine.ssml.replace(/#/g, timeLeft);
   }
   return { input, languageCode, name };
 }

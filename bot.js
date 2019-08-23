@@ -12,11 +12,13 @@ client.on('error', (err) => {
   console.error(err);
 });
 
+let hoursLeft;
 let daysLeft;
-const recalculateDaysLeft = () => {
-  daysLeft = Math.floor((new Date('August 27, 2019 00:00:00 UTC+2') - new Date()) / (1000 * 60 * 60 * 24));
+const recalculateTimeLeft = () => {
+  hoursLeft = Math.floor((new Date('August 27, 2019 00:00:00 UTC+2') - new Date()) / (1000 * 60 * 60));
+  daysLeft = Math.floor(hoursLeft / 24);
 }
-recalculateDaysLeft();
+recalculateTimeLeft();
 
 const ttsClient = new textToSpeech.TextToSpeechClient();
 
@@ -65,14 +67,9 @@ const texts = [
       Zľakli ste sa, čo? Nič sa nebojte, klasik už o # dní! hajp hajp hajp yeaah
     </speak>`
   },
-  {
-    ssml: `<speak>
-      <break time="5s"/>heeej boys<break time="2s"/>
-      ste pripravený expiť za alianciu na pe ve pe serveri? <break time="1s"/>
-      Tak to je najs pretože vov klasik tu je už o # dní! hajp hajp hajp yeaah
-    </speak>`
-  },
 ]
+
+const lastHoursText = '# hodín, opakujem, # hodín'
 
 const norwegianTexts = [
   'hei vår norske gjest! er du klar for purge? Nei? det spiller ingen rolle. Det som betyr noe er at du er klar for wow-klassikeren. på bare # dager'
@@ -133,7 +130,7 @@ client.on('message', async (message) => {
     recentMessage.delete();
     console.log("Deleting competition's message  >:)")
   }
-  recalculateDaysLeft();
+  recalculateTimeLeft();
   const response = `Ishnu-alah <@${message.author.id}>. WoW Classic will be released in ${daysLeft} days. ${sample(nelfDismiss)}`;
   message.channel.send(response);
 })
@@ -195,6 +192,9 @@ const selectVoiceLine = (voiceChannel) => {
       name = 'ja-JP-Wavenet-A';
     }
   }
+  if(hoursLeft < 100) {
+    voiceLine = lastHoursText;
+  }
   let input = {};
   if (typeof voiceLine === 'string') {
     input.text = voiceLine.replace(/#/g, daysLeft) + ' hajp hajp hajp yeah';
@@ -211,20 +211,21 @@ const norwegianPresent = (voiceChannel) => userPresent(voiceChannel, 'Aregahz')
 const weabooPresent = (voiceChannel) => userPresent(voiceChannel, 'adori')
 
 const createIcon = async (daysLeft) => {
-  console.log(`Creating icon for ${daysLeft} days left`)
+  console.log(`Creating icon for ${daysLeft} days left and ${hoursLeft} hours left`)
   const canvas = createCanvas(260, 275)
   const ctx = canvas.getContext('2d')
-  const textX = 6;
+  const textX = (hoursLeft < 100 || daysLeft > 9) ? 6 : 36;
   const textY = 180;
   const image = await loadImage('kai-wow.png')
+  const text = hoursLeft < 100 ? hoursLeft.toString() + 'h' : daysLeft.toString()
 
   ctx.drawImage(image, 0, 0)
   ctx.font = "110px Arial"
   ctx.lineWidth = 10;
   ctx.strokeStyle = 'rgb(41, 61, 99)'
-  ctx.strokeText(daysLeft.toString(), textX, textY);
+  ctx.strokeText(text, textX, textY);
   ctx.fillStyle = 'rgb(254, 217, 40)'
-  ctx.fillText(daysLeft.toString(), textX, textY);
+  ctx.fillText(text, textX, textY);
 
   return canvas.toBuffer('image/png');
 }
